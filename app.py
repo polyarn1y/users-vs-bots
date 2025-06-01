@@ -14,7 +14,6 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-# Настройка страницы
 st.set_page_config(
     page_title="🤖 VK Bots vs Users Analysis",
     page_icon="🤖",
@@ -23,20 +22,16 @@ st.set_page_config(
 )
 
 
-# Функция для загрузки данных с обработкой "Unknown"
 @st.cache_data
 def load_data():
     try:
         data = pd.read_csv('bots_vs_users.csv')
 
-        # Заменяем "Unknown" на NaN
         data = data.replace('Unknown', np.nan)
 
-        # Разделяем числовые и категориальные столбцы
         numerical_cols = data.select_dtypes(include=['int64', 'float64']).columns
         categorical_cols = data.select_dtypes(include=['object']).columns
 
-        # Заполняем пропуски: числовые — средним, категориальные — модой
         for col in numerical_cols:
             data[col] = data[col].fillna(data[col].mean())
         for col in categorical_cols:
@@ -51,7 +46,6 @@ def load_data():
         return None
 
 
-# Функция для предобработки данных
 @st.cache_data
 def preprocess_data(data):
     if data is None:
@@ -78,7 +72,6 @@ def preprocess_data(data):
     return data, numerical_features, categorical_features
 
 
-# Главная функция
 def main():
     st.markdown("## 🤖 Панель анализа VK Bots vs Users")
 
@@ -92,7 +85,6 @@ def main():
     if original_data is None:
         st.stop()
 
-    # Боковая панель с навигацией через selectbox
     st.sidebar.markdown("## 🎛️ Навигация")
 
     analysis_section = st.sidebar.selectbox(
@@ -108,7 +100,6 @@ def main():
         ]
     )
 
-    # Компонент 2: Slider для фильтрации данных
     st.sidebar.markdown("### 🎚️ Фильтры данных")
     sample_size = st.sidebar.slider(
         "Размер выборки для анализа:",
@@ -118,10 +109,8 @@ def main():
         step=100
     )
 
-    # Фильтрация данных
     filtered_data = original_data.sample(n=sample_size, random_state=42)
 
-    # Компонент 3: Multiselect для выбора признаков
     if analysis_section in ["🔍 Исследование признаков", "📊 Корреляционный анализ"]:
         selected_features = st.sidebar.multiselect(
             "🎯 Выберите признаки для анализа:",
@@ -129,7 +118,6 @@ def main():
             default=numerical_features[:5] if len(numerical_features) >= 5 else numerical_features
         )
 
-    # Основной контент в зависимости от выбранного раздела
     if analysis_section == "🏠 Обзор данных":
         show_data_overview(filtered_data, numerical_features, categorical_features)
 
@@ -157,7 +145,6 @@ def main():
     elif analysis_section == "📋 Детальная информация":
         show_detailed_info(filtered_data)
 
-    # Дополнительная боковая панель с информацией
     st.sidebar.markdown("---")
     st.sidebar.markdown("### ℹ️ О датасете")
     st.sidebar.info(
@@ -176,7 +163,6 @@ def main():
         """
     )
 
-    # Кнопка для создания отчета
     if st.sidebar.button("📋 Создать отчет", type="secondary"):
         with st.spinner("📝 Создание отчета..."):
             report = generate_report(original_data, numerical_features, categorical_features)
