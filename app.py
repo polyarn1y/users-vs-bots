@@ -25,7 +25,7 @@ st.set_page_config(
 @st.cache_data
 def load_data():
     try:
-        data = pd.read_csv('bots_vs_users.csv')
+        data = pd.read_csv('bots_vs_users_cleaned.csv')
 
         data = data.replace('Unknown', np.nan)
 
