@@ -2,10 +2,39 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import os
+from model import train_model
 
-model = joblib.load("model.pkl")
-feature_list = joblib.load("feature_list.pkl")
+MODEL_FILE = "model.pkl"
+FEATURES_FILE = "feature_list.pkl"
+metrics = None
 
+st.sidebar.title("⚙️ Управление моделью")
+if st.sidebar.button("🔁 Обучить модель заново"):
+    with st.spinner("Обучение модели..."):
+        model, feature_list, metrics = train_model()
+    st.sidebar.success("✅ Модель обучена!")
+else:
+    if not os.path.exists(MODEL_FILE) or not os.path.exists(FEATURES_FILE):
+        st.warning("Модель не найдена. Выполняется первичное обучение...")
+        model, feature_list, metrics = train_model()
+    else:
+        model = joblib.load(MODEL_FILE)
+        feature_list = joblib.load(FEATURES_FILE)
+        
+if metrics:
+    st.sidebar.markdown("### 📊 Метрики модели")
+    st.sidebar.write(f"**Accuracy:** {metrics['accuracy']:.3f}")
+    st.sidebar.write(f"**ROC AUC:** {metrics['roc_auc']:.3f}")
+    st.sidebar.write(f"**Precision:** {metrics['precision']:.3f}")
+    st.sidebar.write(f"**Recall:** {metrics['recall']:.3f}")
+    st.sidebar.write(f"**F1-score:** {metrics['f1']:.3f}")
+
+    cm = metrics['confusion_matrix']
+    st.sidebar.markdown("**Матрица ошибок**")
+    st.sidebar.write(f"True Neg: {cm[0][0]}, False Pos: {cm[0][1]}")
+    st.sidebar.write(f"False Neg: {cm[1][0]}, True Pos: {cm[1][1]}")
+        
 feature_translation = {
     "has_domain": "Имеет домен",
     "has_birth_date": "Указана дата рождения",
