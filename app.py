@@ -134,10 +134,11 @@ with st.expander("📦 Показать остальные признаки"):
 
 if st.button("🔍 Предсказать"):
     prediction = model.predict(input_df)[0]
-    proba = model.predict_proba(input_df)[0][1]
-    if proba > 0.3:
+    proba_bot = model.predict_proba(input_df)[0][1]
+    proba_user = model.predict_proba(input_df)[0][0]
+    if proba_bot > 0.3:
         prediction = 1
     if prediction == 1:
-        st.error("🤖 БОТ")
+        st.error(f"🤖 БОТ\n\nВероятность: {proba_bot.round(2) * 100}%")
     else:
-        st.success("👤 ЧЕЛОВЕК")
+        st.success(f"👤 ЧЕЛОВЕК, вероятность: {proba_user.round(2) * 100}%")
