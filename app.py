@@ -144,7 +144,7 @@ if st.button("🔍 Предсказать"):
     prediction = model.predict(input_df)[0]
     proba_bot = model.predict_proba(input_df)[0][1]
     proba_user = model.predict_proba(input_df)[0][0]
-    if proba_bot > 0.3:
+    if proba_user < 0.5:
         prediction = 1
     if prediction == 1:
         st.error(f"🤖 БОТ\n\nВероятность: {proba_bot.round(2) * 100}%")
