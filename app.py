@@ -119,8 +119,6 @@ for i, feat in enumerate(top_features):
         label = feature_translation.get(feat, feat)
         if feat in binary_features:
             input_df.at[0, feat] = st.checkbox(label, value=bool(input_df.at[0, feat]))
-        elif feat == "reposts_ratio":
-            input_df.at[0, feat] = st.slider(label, 0.0, 1.0, float(input_df.at[0, feat]), step=0.01)
         else:
             input_df.at[0, feat] = st.number_input(label, min_value=0.0, value=float(input_df.at[0, feat]), step=1.0)
 
