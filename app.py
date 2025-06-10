@@ -99,7 +99,10 @@ st.write("Введите данные или выберите шаблон пр�
 
 col1, col2 = st.columns(2)
 if col1.button("Сгенерировать бота"):
-    st.session_state["input_df"] = pd.DataFrame([{f: 0 for f in feature_list}])
+    remaining = [f for f in feature_list if f not in top_features]
+    for feat in remaining:
+        if feat in binary_features:
+            st.session_state["input_df"].at[0, feat] = np.random.choice([0, 1], p=[0.8, 0.2])
 if col2.button("Сгенерировать человека"):
     st.session_state["input_df"] = pd.DataFrame([{
         f: 1 if f in binary_features else 50 for f in feature_list
