@@ -117,7 +117,10 @@ if col2.button("Сгенерировать человека"):
         f: 1 if f in binary_features else 50 for f in feature_list
     }])
 
+if "input_df" not in st.session_state:
+    st.session_state["input_df"] = pd.DataFrame([{f: 0 for f in feature_list}])
 input_df = st.session_state["input_df"]
+
 
 
 st.markdown("### 📝 Отредактируйте 15 важнейших признаков")
