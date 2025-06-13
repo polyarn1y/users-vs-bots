@@ -149,6 +149,6 @@ if st.button("🔍 Предсказать"):
     if proba_user < 0.5:
         prediction = 1
     if prediction == 1:
-        st.error(f"🤖 БОТ\n\nВероятность: {proba_bot.round(2) * 100}%")
+        st.error(f"🤖 БОТ\n\nВероятность: {proba_bot * 100:.2f}%")
     else:
-        st.success(f"👤 ЧЕЛОВЕК\n\nВероятность: {proba_user.round(2) * 100}%")
+        st.success(f"👤 ЧЕЛОВЕК\n\nВероятность: {proba_user * 100:.2f}%")
