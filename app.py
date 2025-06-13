@@ -117,6 +117,9 @@ if col2.button("Сгенерировать человека"):
         f: 1 if f in binary_features else 50 for f in feature_list
     }])
 
+input_df = st.session_state["input_df"]
+
+
 st.markdown("### 📝 Отредактируйте 15 важнейших признаков")
 cols = st.columns(3)
 for i, feat in enumerate(top_features):
