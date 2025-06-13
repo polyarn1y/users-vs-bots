@@ -78,7 +78,8 @@ feature_translation = {
     "is_confirmed": "Номер подтверждён",
     "posts_count": "Количество постов",
     "links_ratio": "Доля ссылок",
-    "hashtags_ratio": "Доля хэштегов"
+    "hashtags_ratio": "Доля хэштегов",
+    "phone_numbers_ratio": "Доля телефонных номеров"
 }
 
 binary_features = [
