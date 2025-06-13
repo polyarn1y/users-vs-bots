@@ -109,7 +109,9 @@ if col1.button("Сгенерировать бота"):
     remaining = [f for f in feature_list if f not in top_features]
     for feat in remaining:
         if feat in binary_features:
-            st.session_state["input_df"].at[0, feat] = np.random.choice([0, 1], p=[0.8, 0.2])
+            st.session_state["input_df"].at[0, feat] = 1  
+        else:
+            st.session_state["input_df"].at[0, feat] = 2.0 
 if col2.button("Сгенерировать человека"):
     st.session_state["input_df"] = pd.DataFrame([{
         f: 1 if f in binary_features else 50 for f in feature_list
